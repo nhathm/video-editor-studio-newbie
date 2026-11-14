@@ -1,0 +1,7 @@
+{
+  "edition": "newbie",
+  "tier": "newbie",
+  "resources": [
+    "whisper-small"
+  ]
+}
