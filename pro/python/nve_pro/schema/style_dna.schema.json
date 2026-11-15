@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nve.style_dna/2",
+  "title": "nve style DNA: the design language of a reference video",
+  "description": "What a reference video's style is made of, abstracted so it can be applied to ANY of the user's videos with their own content. Never the reference's footage, music, words, layout or scene order. Written by Claude from `nve ref` measurements and sheets.",
+  "type": "object",
+  "required": ["schema", "refs", "name", "summary", "style", "apply"],
+  "properties": {
+    "schema": {"const": "nve.style_dna/2"},
+    "refs": {"type": "array", "items": {"type": "string"}, "minItems": 1, "description": "reference ids, e.g. [\"r1\"]"},
+    "name": {"type": "string", "description": "short name for the style, e.g. 'warm podcast bold'"},
+    "summary": {"type": "string", "description": "one sentence: the feel of the style, not the content of the sample"},
+    "fits": {"type": "array", "items": {"type": "string"}, "description": "kinds of video it suits: talking head, tips, product, ..."},
+    "style": {
+      "type": "object",
+      "description": "reusable design tokens",
+      "properties": {
+        "type": {
+          "type": "object",
+          "description": "text treatments by role",
+          "properties": {
+            "title": {"$ref": "#/$defs/text"},
+            "caption": {"$ref": "#/$defs/text"},
+            "label": {"$ref": "#/$defs/text"}
+          }
+        },
+        "palette": {"type": "object", "properties": {
+          "text": {"type": "string"}, "accent": {"type": "string"}, "accent2": {"type": "string"},
+          "ink": {"type": "string"}, "background": {"type": "string"}}},
+        "motion": {"type": "object", "properties": {
+          "text_enter": {"type": "string", "description": "pop / slam / fade-up / slide / typewriter / word-by-word"},
+          "text_exit": {"type": "string"},
+          "speed": {"enum": ["snappy", "medium", "slow"]},
+          "graphics": {"type": "string", "description": "how cards / pictures / UI come in"},
+          "camera": {"type": "string", "description": "punch-ins, slow push, shake, none"}}},
+        "transitions": {"type": "object", "properties": {
+          "kinds": {"type": "array", "items": {"type": "string"}}, "per_min": {"type": "number"}}},
+        "pace": {"type": "object", "properties": {
+          "cuts_per_min": {"type": "number"}, "avg_shot_s": {"type": "number"},
+          "graphics_every_s": {"type": "number"}, "hook_s": {"type": "number"}}},
+        "look": {"type": "object", "properties": {
+          "grade": {"type": "string"}, "lighting": {"type": "string"}, "framing": {"type": "string"},
+          "background": {"type": "string", "description": "for green screen: what kind of backdrop fits"}}},
+        "sound": {"type": "object", "properties": {
+          "music_mood": {"type": "string", "description": "from the measured mood + what the edit feels like"},
+          "music_energy": {"enum": ["low", "medium", "high", "none"]},
+          "bpm": {"type": ["number", "null"]},
+          "music_level": {"type": "string", "description": "under the voice / leading / none"},
+          "sfx_density": {"enum": ["none", "light", "medium", "heavy"]},
+          "sfx_kinds": {"type": "array", "items": {"type": "string"}},
+          "beat_synced": {"type": ["boolean", "null"]}}}
+      }
+    },
+    "signature_moves": {
+      "type": "array",
+      "description": "devices that make the style recognisable; use one only when the user's own content gives a reason",
+      "items": {"type": "object", "required": ["name", "what"], "properties": {
+        "name": {"type": "string"}, "what": {"type": "string"},
+        "when_it_fits": {"type": "string"},
+        "nve": {"type": "string", "description": "block that does it (e.g. core:media.wall), or 'missing'"}}}
+    },
+    "apply": {
+      "type": "object",
+      "description": "what `nve style apply` writes into a storyboard (the storyboard and the user's taste still win)",
+      "properties": {
+        "template": {"type": "string"},
+        "output": {"type": "object", "description": "e.g. {\"speed\": 1.1}"},
+        "style": {"type": "object", "description": "storyboard style values: font, palette, caption, look, skin, background..."},
+        "music": {"type": "object", "properties": {"mood": {"type": "string"}, "volume": {"type": "number"},
+          "pick_from": {"type": "array", "items": {"type": "string"}, "description": "library tracks that fit, e.g. lib:bgm/inspired"}}},
+        "stamp": {"type": "object", "description": "default props for highlight stamps (top, alt rhythm, emoji yes/no)"},
+        "limits": {"type": "object", "description": "density guide, e.g. {\"stamps_per_min\": 6, \"sfx_per_min\": 10}"}
+      }
+    },
+    "missing": {"type": "array", "items": {"type": "string"}, "description": "parts of the style nve cannot do yet; tell the user"}
+  },
+  "$defs": {
+    "text": {"type": "object", "properties": {
+      "font_guess": {"type": "string"}, "nve_font": {"type": "string", "description": "closest font in nve's pack (packs/fonts/fonts.json)"},
+      "weight": {"type": "string"}, "case": {"enum": ["upper", "lower", "title", "mixed"]}, "condensed": {"type": "boolean"},
+      "size_pct": {"type": "number", "description": "line height as % of frame height"},
+      "color": {"type": "string"}, "keyword_color": {"type": "string"}, "stroke": {"type": "string"}, "shadow": {"type": "string"},
+      "glow": {"type": "string"}, "box": {"type": "string", "description": "pill / box / frosted card, or none"},
+      "position": {"type": "string"}, "words_at_once": {"type": "string", "description": "for captions, e.g. 2-3"},
+      "karaoke": {"type": "boolean"}}}
+  }
+}

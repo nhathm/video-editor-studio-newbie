@@ -1,4 +1,5 @@
-"""Large resources fetched on demand (models first), listed in <install>/resources.json.
+"""Newbie edition only (added by build/export_newbie.py; the other editions do not have this module).
+Large resources fetched on demand (models first), listed in <install>/resources.json.
 
 Each entry pins a git repo folder and the SHA-256 of every file. Fetching uses only github.com (git), so it
 works on the claude.ai Free sandbox where Hugging Face, release assets, LFS and raw.githubusercontent.com are
